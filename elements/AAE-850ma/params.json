@@ -1,0 +1,35 @@
+{
+    "add_is_visible": true,
+    "category": "visual elements",
+    "default_dim": {
+        "height": 20,
+        "width": 20
+    },
+    "display": "bbcode to html",
+    "fields": {
+        "AAC": {
+            "caption": "BBCode",
+            "doc": "BBCode or Richtext Value",
+            "editor": "DynamicValue",
+            "long_text": true,
+            "name": "bbcode",
+            "rank": 0,
+            "value": "text"
+        }
+    },
+    "icon": "ion-code-working",
+    "property_applications": {
+        "resizable": true
+    },
+    "states": {
+        "AAD": {
+            "caption": "HTML",
+            "doc": "Converted HTML",
+            "initialization_code": {
+                "fn": "function(properties, context) {\n\n\n\n}"
+            },
+            "name": "html",
+            "value": "text"
+        }
+    }
+}

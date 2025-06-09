@@ -1,0 +1,12 @@
+{
+    "categories": {
+        "0": "technical",
+        "1": "email"
+    },
+    "data_tracked": false,
+    "description": "Converte bbcode to html [img] and more",
+    "image": "//meta-q.cdn.bubble.io/f1743591935026x908738591323553700/logo-bbcode.png",
+    "license": "open_source",
+    "name": "bbcode to html",
+    "sa_node_version": 18
+}

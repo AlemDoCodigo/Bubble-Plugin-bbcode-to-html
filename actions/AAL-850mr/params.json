@@ -1,0 +1,24 @@
+{
+    "category": "plugins",
+    "display": "bbcodejs",
+    "fields": {
+        "AAK": {
+            "caption": "input_bbcode",
+            "editor": "DynamicValue",
+            "long_text": true,
+            "name": "input_bbcode",
+            "rank": 0,
+            "value": "text"
+        }
+    },
+    "return_value": {
+        "AAH": {
+            "caption": "html",
+            "name": "html",
+            "rank": 0,
+            "value": "text"
+        }
+    },
+    "type": "server_side",
+    "use_packages": true
+}
