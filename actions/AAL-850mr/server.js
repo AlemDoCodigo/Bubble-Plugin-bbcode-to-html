@@ -1,31 +1,47 @@
 function(properties, context) {
-  // Importa o bbcodejs, pegando o BBCodeParser correto
+  // Importa o bbcodejs e tenta localizar a função adequada para conversão.
   const bbcodejs = require("bbcodejs");
-  // "bbcodejs" has shipped different exports across versions. Try the
-  // available options to obtain the parser constructor.
-  const BBCodeParser =
-    bbcodejs.BBCodeParser ||
-    bbcodejs.default ||
-    bbcodejs;
-
   const input_bbcode = properties.input_bbcode || '';
 
-  // Cria o parser
-  const parser = new BBCodeParser();
+  // Procura um construtor de parser nas possíveis exportações.
+  const ParserClass =
+    (typeof bbcodejs === 'function' && bbcodejs) ||
+    (bbcodejs && typeof bbcodejs.BBCodeParser === 'function' && bbcodejs.BBCodeParser) ||
+    (bbcodejs && typeof bbcodejs.Parser === 'function' && bbcodejs.Parser) ||
+    (bbcodejs && bbcodejs.default && typeof bbcodejs.default === 'function' && bbcodejs.default) ||
+    (bbcodejs && bbcodejs.default && typeof bbcodejs.default.BBCodeParser === 'function' && bbcodejs.default.BBCodeParser) ||
+    null;
 
-  // Converte para HTML
-  // A API pode expor diferentes nomes para a mesma operação. Verifica o
-  // método disponível e utiliza o primeiro encontrado.
   let html = "";
-  if (typeof parser.toHTML === "function") {
-    html = parser.toHTML(input_bbcode);
-  } else if (typeof parser.bbcodeToHTML === "function") {
-    html = parser.bbcodeToHTML(input_bbcode);
-  } else if (typeof parser.bbcodeToHtml === "function") {
-    html = parser.bbcodeToHtml(input_bbcode);
+
+  if (ParserClass) {
+    // Se encontramos um construtor, instancia e utiliza.
+    const parser = new ParserClass();
+    if (typeof parser.toHTML === "function") {
+      html = parser.toHTML(input_bbcode);
+    } else if (typeof parser.bbcodeToHTML === "function") {
+      html = parser.bbcodeToHTML(input_bbcode);
+    } else if (typeof parser.bbcodeToHtml === "function") {
+      html = parser.bbcodeToHtml(input_bbcode);
+    } else if (typeof parser.render === "function") {
+      html = parser.render(input_bbcode);
+    }
+  } else {
+    // Caso não exista construtor, usa funções utilitárias diretamente.
+    const renderFn =
+      (typeof bbcodejs.toHTML === 'function' && bbcodejs.toHTML) ||
+      (typeof bbcodejs.render === 'function' && bbcodejs.render) ||
+      (typeof bbcodejs.bbcodeToHTML === 'function' && bbcodejs.bbcodeToHTML) ||
+      (typeof bbcodejs.bbcodeToHtml === 'function' && bbcodejs.bbcodeToHtml) ||
+      (bbcodejs.default && typeof bbcodejs.default.render === 'function' && bbcodejs.default.render) ||
+      (bbcodejs.default && typeof bbcodejs.default.toHTML === 'function' && bbcodejs.default.toHTML) ||
+      null;
+
+    if (renderFn) {
+      html = renderFn(input_bbcode);
+    }
   }
 
-  // Retorna o resultado
   return {
     html: html
   };
